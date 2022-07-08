@@ -1,6 +1,15 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 
 function Header() {
+
+  const specialItems = [
+    { title : "Events", path : "events"},
+    { title : "About Us", path : "about"},
+    { title : "Best Deals", path : "bestdeals"},
+    { title : "Services", path : "services"},
+  ]
+
   return (
         <>
     <div className="agileits_header">
@@ -23,7 +32,7 @@ function Header() {
         <input type="submit" name="submit" 
         value="View your cart" 
         className="button" />{}
-        <input type="submit" className="button" value="Login" />
+        <Link className="button" to="/" >Login</Link>
       </fieldset>
     </form>
   </div>
@@ -56,10 +65,11 @@ function Header() {
     </div>
     <div className="w3ls_logo_products_left1">
       <ul className="special_items">
-        <li><a href="events.html">Events</a><i>/</i></li>
-        <li><a href="about.html">About Us</a><i>/</i></li>
-        <li><a href="products.html">Best Deals</a><i>/</i></li>
-        <li><a href="services.html">Services</a></li>
+        {
+          specialItems.map((item,position) => <li key={position}>
+            <Link to={item.path}>{item.title}</Link><i>/</i>
+          </li>)
+        }
       </ul>
     </div>
     <div className="w3ls_logo_products_left1">

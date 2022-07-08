@@ -5,16 +5,33 @@ import Newsletter from "./components/Newsletter";
 import Footer from "./components/Footer";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import About from "./pages/About";
 
 function App() {
+  const routeData = [
+    { path: "products", element: <Products /> },
+    { path: "about", element: <About /> },
+    { path: "events", element: <h1>Events</h1> },
+    { path: "bestdeals", element: <h1>Best Deals</h1> },
+  ];
+
   return (
-    <>
+    <BrowserRouter>
       <Header />
-      {/* <Login /> */}
-      <Products />
+      <Routes>
+        <Route index element={<Login />} />
+        {routeData.map((theRoute, position) => (
+          <Route
+            key={position}
+            path={theRoute.path}
+            element={theRoute.element}
+          />
+        ))}
+      </Routes>
       <Newsletter />
       <Footer />
-    </>
+    </BrowserRouter>
   );
 }
 
