@@ -7,7 +7,7 @@ function Header() {
     { title : "Events", path : "events"},
     { title : "About Us", path : "about"},
     { title : "Best Deals", path : "bestdeals"},
-    { title : "Services", path : "services"},
+    { title : "Products", path : "products"},
   ]
 
   return (

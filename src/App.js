@@ -7,10 +7,18 @@ import Login from "./pages/Login";
 import Products from "./pages/Products";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from "./pages/About";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 
 function App() {
   const routeData = [
-    { path: "products", element: <Products /> },
+    {
+      path: "products",
+      element: (
+        <ProtectedRoute>
+          <Products />
+        </ProtectedRoute>
+      ),
+    },
     { path: "about", element: <About /> },
     { path: "events", element: <h1>Events</h1> },
     { path: "bestdeals", element: <h1>Best Deals</h1> },
