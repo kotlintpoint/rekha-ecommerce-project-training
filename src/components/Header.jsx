@@ -19,8 +19,7 @@ function Header() {
   <div className="w3l_search">
     <form action="#" method="post">
       <input type="text" name="Product" defaultValue="Search a product..." 
-      onFocus="this.value = '';"
-       onBlur="if (this.value == '') {this.value = 'Search a product...';}" required />
+     required />
       <input type="submit" defaultValue=" " />
     </form>
   </div>

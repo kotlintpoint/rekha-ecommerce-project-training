@@ -9,7 +9,7 @@ function Newsletter() {
     </div>
     <div className="w3agile_newsletter_right">
       <form action="#" method="post">
-        <input type="email" name="Email" defaultValue="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}" required />
+        <input type="email" name="Email" defaultValue="Email" required />
         <input type="submit" defaultValue="subscribe now" />
       </form>
     </div>

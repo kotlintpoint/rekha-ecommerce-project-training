@@ -1,22 +1,24 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Header from "./components/Header";
-import Newsletter from "./components/Newsletter";
-import Footer from "./components/Footer";
+
 import Login from "./pages/Login";
 import Products from "./pages/Products";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import About from "./pages/About";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import PrivateRoute from "./components/PrivateRoute";
+import Header from "./components/Header";
+import Newsletter from "./components/Newsletter";
+import Footer from "./components/Footer";
 
 function App() {
   const routeData = [
     {
       path: "products",
       element: (
-        <ProtectedRoute>
+        <PrivateRoute>
           <Products />
-        </ProtectedRoute>
+        </PrivateRoute>
       ),
     },
     { path: "about", element: <About /> },

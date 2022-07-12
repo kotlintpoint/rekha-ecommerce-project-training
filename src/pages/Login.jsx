@@ -1,37 +1,50 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { loginRequest } from '../actions/loginActions';
 
-function Login() {
+
+const Login = () => {
+  const [userName, setUserName] = useState("");
+  const [password, setPassword] = useState("");
+  const loginData = useSelector(state => state.login);
+  const dispatch = useDispatch();
+
+  const handleLogin = ()=>{
+   dispatch(loginRequest(userName, password));
+  } 
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    if(name==="username"){
+      setUserName(e.target.value);
+    }
+    if(name==="password"){
+      setPassword(e.target.value);
+    }
+  }
+  console.log("LoginData",loginData);
+  if(loginData.userDetail){
+    // redirect on Products
+    
+  }
+
   return (
-    <div className="w3_login">
+    <div >
   <h3>Sign In &amp; Sign Up</h3>
-  <div className="w3_login_module">
-    <div className="module form-module">
-      <div className="toggle"><i className="fa fa-times fa-pencil" />
-        <div className="tooltip">Click Me</div>
+  
+      <div >
+        <h2>{loginData.isLoading ? "Wait..." : "Login to your account"}</h2>
+       
+          <input type="text" 
+            name="username" placeholder="Username" required=" "
+            onChange={handleChange} />
+          <input type="password" name="password" placeholder="Password" required=" "
+          onChange={handleChange} />
+          <input type="submit" value="Login"
+          onClick={handleLogin} />
+    
       </div>
-      <div className="form">
-        <h2>Login to your account</h2>
-        <form action="#" method="post">
-          <input type="text" name="Username" placeholder="Username" required=" " />
-          <input type="password" name="Password" placeholder="Password" required=" " />
-          <input type="submit" defaultValue="Login" />
-        </form>
-      </div>
-      <div className="form">
-        <h2>Create an account</h2>
-        <form action="#" method="post">
-          <input type="text" name="Username" placeholder="Username" required=" " />
-          <input type="password" name="Password" placeholder="Password" required=" " />
-          <input type="email" name="Email" placeholder="Email Address" required=" " />
-          <input type="text" name="Phone" placeholder="Phone Number" required=" " />
-          <input type="submit" defaultValue="Register" />
-        </form>
-      </div>
-      <div className="cta"><a href="#">Forgot your password?</a></div>
     </div>
-  </div>
-</div>
-
   )
 }
 
