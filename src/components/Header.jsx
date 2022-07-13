@@ -1,87 +1,52 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import Button  from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "./AuthProvider";
 
-function Header() {
+const Header = () => {
 
-  const specialItems = [
-    { title : "Events", path : "events"},
-    { title : "About Us", path : "about"},
-    { title : "Best Deals", path : "bestdeals"},
-    { title : "Products", path : "products"},
-  ]
+  const navigate = useNavigate();
+  const { user, signout } = useAuth();
+  console.log('user in header',user);
+
+  const handleLogout = () => {
+    signout(()=>{
+        navigate("/");
+    })
+  }
 
   return (
-        <>
-    <div className="agileits_header">
-  <div className="w3l_offers">
-    <a href="products.html">Today's special Offers !</a>
-  </div>
-  <div className="w3l_search">
-    <form action="#" method="post">
-      <input type="text" name="Product" defaultValue="Search a product..." 
-     required />
-      <input type="submit" defaultValue=" " />
-    </form>
-  </div>
-  <div className="product_list_header">  
-    <form action="#" method="post" className="last">
-      <fieldset>
-        <input type="hidden" name="cmd" value="_cart" />
-        <input type="hidden" name="display" value={1} />
-        <input type="submit" name="submit" 
-        value="View your cart" 
-        className="button" />{}
-        <Link className="button" to="/" >Login</Link>
-      </fieldset>
-    </form>
-  </div>
-  {/* <div className="w3l_header_right">
-    <ul>
-      <li className="dropdown profile_details_drop">
-        <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-            <i className="fa fa-user" aria-hidden="true" /><span className="caret" /></a>
-        <div className="mega-dropdown-menu">
-          <div className="w3ls_vegetables">
-            <ul className="dropdown-menu drp-mnu">
-              <li><a href="login.html">Login</a></li> 
-              <li><a href="login.html">Sign Up</a></li>
-            </ul>
-          </div>                  
-        </div>	
-      </li>
-    </ul>
-  </div> */}
-  <div className="w3l_header_right1">
-    <h2><a href="mail.html">Contact Us</a></h2>
-  </div>
-  <div className="clearfix"> </div>
-</div>
+    <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+      <Container>
+        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="me-auto">
+            <Link to="/">Products</Link> | 
+            <Link to="/about">About Us</Link> | 
+            <Link to="/cart">Cart</Link> | 
+            {
+              user ? <Button onClick={handleLogout}>Logout</Button> 
+              : <Link to="/login">Login</Link> 
+            }
+            {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">
+                Another action
+              </NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Divider />
+              <NavDropdown.Item href="#action/3.4">
+                Separated link
+              </NavDropdown.Item>
+            </NavDropdown> */}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  );
+};
 
-<div className="logo_products">
-  <div className="container">
-    <div className="w3ls_logo_products_left">
-      <h1><a href="index.html"><span>Grocery</span> Store</a></h1>
-    </div>
-    <div className="w3ls_logo_products_left1">
-      <ul className="special_items">
-        {
-          specialItems.map((item,position) => <li key={position}>
-            <Link to={item.path}>{item.title}</Link><i>/</i>
-          </li>)
-        }
-      </ul>
-    </div>
-    <div className="w3ls_logo_products_left1">
-      <ul className="phone_email">
-        <li><i className="fa fa-phone" aria-hidden="true" />(+0123) 234 567</li>
-        <li><i className="fa fa-envelope-o" aria-hidden="true" /><a href="mailto:store@grocery.com">store@grocery.com</a></li>
-      </ul>
-    </div>
-    <div className="clearfix"> </div>
-  </div>
-</div>
-</>    
-  )
-}
-
-export default Header
+export default Header;

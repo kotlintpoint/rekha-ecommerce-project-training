@@ -1,51 +1,77 @@
-import React, {useState} from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest } from '../actions/loginActions';
+import React, { useState } from "react";
+import { Button, Container, Form } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { loginRequest } from "../actions/loginActions";
+import { useAuth } from "../components/AuthProvider";
 
-
-const Login = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const loginData = useSelector(state => state.login);
+const Login = (props) => {
+  let navigate = useNavigate();
+  const { signin } = useAuth();
   const dispatch = useDispatch();
 
-  const handleLogin = ()=>{
-   dispatch(loginRequest(userName, password));
-  } 
+  // receive data from redux store
+  const loginDetails = useSelector((state) => state.login);
+  
+  const [formData, setFormData] = useState({
+    username: "kminchelle",
+    password: "0lelplR"
+  });
 
-  const handleChange = (e) => {
-    const name = e.target.name;
-    if(name==="username"){
-      setUserName(e.target.value);
-    }
-    if(name==="password"){
-      setPassword(e.target.value);
-    }
-  }
-  console.log("LoginData",loginData);
-  if(loginData.userDetail){
-    // redirect on Products
-    
+  const handleInputChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = () => {
+    dispatch(loginRequest(formData.username, formData.password));
+  };
+
+  console.log(loginDetails);
+  if (loginDetails.userDetail) {
+   // console.log("userDetail in login", loginDetails.userDetail);
+    signin(loginDetails.userDetail, () => {
+      console.log("Navigate Products");
+      navigate("/");
+    });
   }
 
   return (
-    <div >
-  <h3>Sign In &amp; Sign Up</h3>
-  
-      <div >
-        <h2>{loginData.isLoading ? "Wait..." : "Login to your account"}</h2>
-       
-          <input type="text" 
-            name="username" placeholder="Username" required=" "
-            onChange={handleChange} />
-          <input type="password" name="password" placeholder="Password" required=" "
-          onChange={handleChange} />
-          <input type="submit" value="Login"
-          onClick={handleLogin} />
-    
-      </div>
-    </div>
-  )
-}
+    <Container>
+      <h1>{loginDetails.isLoading ? "Please Wait...." : "Login Here"}</h1>
+      <Form>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            name="username"
+            placeholder="Enter Username"
+            onChange={handleInputChange}
+            value={formData.username}
+          />
+        </Form.Group>
 
-export default Login
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            placeholder="Password"
+            onChange={handleInputChange}
+            value={formData.password}
+          />
+        </Form.Group>
+        {/* <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Check me out" />
+        </Form.Group> */}
+        <Button variant="primary" onClick={handleSubmit}>
+          Submit
+        </Button>
+      </Form>
+      <p>{loginDetails.errorMessage}</p>
+    </Container>
+  );
+};
+export default Login;

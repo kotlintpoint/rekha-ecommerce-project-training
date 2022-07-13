@@ -1,4 +1,5 @@
 import axios from "axios";
+
 import { LOGIN_FAIL, LOGIN_REQUEST, LOGIN_SUCCESS } from "../constants";
 
 export const loginRequest = (username, password) => {
@@ -27,9 +28,10 @@ export const loginRequest = (username, password) => {
         });
       }
     } catch (error) {
+      console.log("error", error);
       dispatch({
         type: LOGIN_FAIL,
-        payload: error,
+        payload: error.response.data.message,
       });
     }
   };

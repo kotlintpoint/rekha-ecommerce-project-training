@@ -1,48 +1,60 @@
-import logo from "./logo.svg";
-import "./App.css";
-
-import Login from "./pages/Login";
-import Products from "./pages/Products";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import About from "./pages/About";
-import { ProtectedRoute } from "./components/ProtectedRoute";
-import PrivateRoute from "./components/PrivateRoute";
 import Header from "./components/Header";
-import Newsletter from "./components/Newsletter";
-import Footer from "./components/Footer";
+import "./styles.css";
+import { Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import AboutUs from "./pages/AboutUs";
+import Products from "./pages/Products";
+import Cart from "./pages/Cart";
+import RequireAuth from "./components/RequireAuth";
+import AuthProvider from "./components/AuthProvider";
+import React from "react";
 
-function App() {
-  const routeData = [
-    {
-      path: "products",
-      element: (
-        <PrivateRoute>
-          <Products />
-        </PrivateRoute>
-      ),
-    },
-    { path: "about", element: <About /> },
-    { path: "events", element: <h1>Events</h1> },
-    { path: "bestdeals", element: <h1>Best Deals</h1> },
+export default function App() {
+  const allRoutes = [
+    { path: "/login", element: <Login />, isAuth: false },
+    { path: "/about", element: <AboutUs />, isAuth: true },
+    { path: "/cart", element: <Cart />, isAuth: false },
+    { path: "/", element: <Products />, isAuth: true },
   ];
 
   return (
-    <BrowserRouter>
+    <AuthProvider>
       <Header />
       <Routes>
-        <Route index element={<Login />} />
-        {routeData.map((theRoute, position) => (
-          <Route
-            key={position}
-            path={theRoute.path}
-            element={theRoute.element}
-          />
-        ))}
+        {allRoutes.map((theRoute, position) => {
+          return (
+            <Route
+              key={position}
+              path={theRoute.path}
+              element={
+                theRoute.isAuth ? (
+                  <RequireAuth>{theRoute.element}</RequireAuth>
+                ) : (
+                  theRoute.element
+                )
+              }
+            />
+          );
+        })}
+        {/* <Route path="/login" element={<Login />} />
+        <Route
+          path="about"
+          element={
+            <RequireAuth>
+              <AboutUs />
+            </RequireAuth>
+          }
+        />
+        <Route path="cart" element={<Cart />} />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <Products />
+            </RequireAuth>
+          }
+        /> */}
       </Routes>
-      <Newsletter />
-      <Footer />
-    </BrowserRouter>
+    </AuthProvider>
   );
 }
-
-export default App;
