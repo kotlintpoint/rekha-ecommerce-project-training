@@ -1,16 +1,33 @@
+import { PRODUCT_REQUEST, PRODUCT_SUCCESS, PRODUCT_FAIL } from "../constants";
+
 const initialState = {
   isLoading: false,
-  products: undefined,
+  products: null,
   errorMessage: "",
 };
 
 const productReducer = (state = initialState, action) => {
-  switch (
-    action.type
-    // 1. 2. 3 case
-    // on  success payload will get product array
-    // on fail error in payload
-  ) {
+  switch (action.type) {
+    case PRODUCT_REQUEST:
+      return {
+        ...state,
+        isLoading: true,
+        errorMessage: "",
+      };
+    case PRODUCT_SUCCESS:
+      return {
+        isLoading: false,
+        errorMessage: "",
+        products: action.payload,
+      };
+    case PRODUCT_FAIL:
+      return {
+        isLoading: false,
+        errorMessage: action.payload,
+        products: null,
+      };
+    default:
+      return state;
   }
 };
 

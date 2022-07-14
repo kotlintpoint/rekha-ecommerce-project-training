@@ -1,21 +1,24 @@
-import Button  from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "./AuthProvider";
 
 const Header = () => {
-
+  let { user, signout } = useAuth();
   const navigate = useNavigate();
-  const { user, signout } = useAuth();
-  console.log('user in header',user);
+  const links = [
+    { title: "Products", to: "/" },
+    { title: "About Us", to: "/about" },
+    { title: "Cart", to: "/cart" }
+  ];
 
   const handleLogout = () => {
-    signout(()=>{
-        navigate("/");
-    })
-  }
+    signout(() => {
+      navigate("/");
+    });
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -24,13 +27,24 @@ const Header = () => {
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
-            <Link to="/">Products</Link> | 
-            <Link to="/about">About Us</Link> | 
-            <Link to="/cart">Cart</Link> | 
-            {
-              user ? <Button onClick={handleLogout}>Logout</Button> 
-              : <Link to="/login">Login</Link> 
-            }
+            {links.map((theLink, position) => (
+              <Link key={position} to={theLink.to} className="nav-link">
+                {theLink.title}
+              </Link>
+            ))}
+            {user ? (
+              <Button
+                onClick={handleLogout}
+                variant="link"
+                className="nav-link"
+              >
+                Logout
+              </Button>
+            ) : (
+              <Link to="/login" className="nav-link">
+                Login
+              </Link>
+            )}
             {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">

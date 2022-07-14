@@ -13,7 +13,7 @@ export default function App() {
   const allRoutes = [
     { path: "/login", element: <Login />, isAuth: false },
     { path: "/about", element: <AboutUs />, isAuth: true },
-    { path: "/cart", element: <Cart />, isAuth: false },
+    { path: "/cart", element: <Cart />, isAuth: true },
     { path: "/", element: <Products />, isAuth: true },
   ];
 
